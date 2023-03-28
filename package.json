@@ -6,6 +6,9 @@
   "repository": "git@github.com:Cattttttttt/whatlang-node.git",
   "license": "MIT",
   "keywords": [
+    "whatlang",
+    "languagedetect",
+    "language",
     "napi-rs",
     "NAPI",
     "N-API",

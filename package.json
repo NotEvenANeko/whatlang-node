@@ -45,9 +45,9 @@
   "scripts": {
     "artifacts": "napi artifacts",
     "bench": "node -r @swc-node/register benchmark/bench.ts",
-    "build": "napi build --platform --release --pipe \"prettier -w\"",
-    "build:debug": "napi build --platform --pipe \"prettier -w\" && yarn post:build",
-    "post:build": "cat types.js >> index.js && cat types.d.ts >> index.d.ts",
+    "build": "napi build --platform --release --pipe \"prettier -w\" && yarn post:build",
+    "build:debug": "napi build --platform --pipe \"yarn post:build\" && yarn post:build",
+    "post:build": "(grep -q -m 1 \"module.exports.LangCode\" index.js || cat types.js >> index.js); (grep -q -m 1 \"export const enum\" index.d.ts || cat types.d.ts >> index.d.ts)",
     "format": "run-p format:prettier format:rs format:toml",
     "format:prettier": "prettier . -w",
     "format:toml": "taplo format",

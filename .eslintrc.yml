@@ -13,7 +13,7 @@ env:
   node: true
   jest: true
 
-ignorePatterns: ['index.js']
+ignorePatterns: ['index.js', 'types.js']
 
 plugins:
   - import

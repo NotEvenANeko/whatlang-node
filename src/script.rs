@@ -14,6 +14,7 @@ pub struct JsScript {
 #[napi]
 impl JsScript {
   // can't generate dts without constructor or factory :(
+  // TODO: impl from_str()
   #[napi(constructor)]
   pub fn __throw() -> Result<Self> {
     Err(Error::from_reason("Unimplemented!"))

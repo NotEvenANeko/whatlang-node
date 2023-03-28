@@ -29,13 +29,17 @@ jobs:
             target: x86_64-apple-darwin
             build: |
               yarn build
+              yarn post:build
               strip -x *.node
           - host: windows-latest
-            build: yarn build
+            build: |
+              yarn build
+              yarn post:build
             target: x86_64-pc-windows-msvc
           - host: windows-latest
             build: |
               yarn build --target i686-pc-windows-msvc
+              yarn post:build
               yarn test
             target: i686-pc-windows-msvc
           - host: ubuntu-latest
@@ -44,11 +48,12 @@ jobs:
             build: |-
               set -e &&
               yarn build --target x86_64-unknown-linux-gnu &&
+              yarn post:build &&
               strip *.node
           - host: ubuntu-latest
             target: x86_64-unknown-linux-musl
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-            build: set -e && yarn build && strip *.node
+            build: set -e && yarn build && yarn post:build && strip *.node
           - host: macos-latest
             target: aarch64-apple-darwin
             build: |
@@ -58,6 +63,7 @@ jobs:
               SYSROOT=$(xcrun --sdk macosx --show-sdk-path);
               export CFLAGS="-isysroot $SYSROOT -isystem $SYSROOT";
               yarn build --target aarch64-apple-darwin
+              yarn post:build
               strip -x *.node
           - host: ubuntu-latest
             target: aarch64-unknown-linux-gnu
@@ -65,6 +71,7 @@ jobs:
             build: |-
               set -e &&
               yarn build --target aarch64-unknown-linux-gnu &&
+              yarn post:build &&
               aarch64-unknown-linux-gnu-strip *.node
           - host: ubuntu-latest
             target: armv7-unknown-linux-gnueabihf
@@ -73,16 +80,19 @@ jobs:
               sudo apt-get install gcc-arm-linux-gnueabihf -y
             build: |
               yarn build --target armv7-unknown-linux-gnueabihf
+              yarn post:build
               arm-linux-gnueabihf-strip *.node
           - host: ubuntu-latest
             target: aarch64-linux-android
             build: |
               yarn build --target aarch64-linux-android
+              yarn post:build
               ${ANDROID_NDK_LATEST_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip *.node
           - host: ubuntu-latest
             target: armv7-linux-androideabi
             build: |
               yarn build --target armv7-linux-androideabi
+              yarn post:build
               ${ANDROID_NDK_LATEST_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip *.node
           - host: ubuntu-latest
             target: aarch64-unknown-linux-musl
@@ -91,10 +101,13 @@ jobs:
               set -e &&
               rustup target add aarch64-unknown-linux-musl &&
               yarn build --target aarch64-unknown-linux-musl &&
+              yarn post:build &&
               /aarch64-linux-musl-cross/bin/aarch64-linux-musl-strip *.node
           - host: windows-latest
             target: aarch64-pc-windows-msvc
-            build: yarn build --target aarch64-pc-windows-msvc
+            build: |
+              yarn build --target aarch64-pc-windows-msvc
+              yarn post:build
     name: stable - ${{ matrix.settings.target }} - node@18
     runs-on: ${{ matrix.settings.host }}
     steps:
@@ -200,6 +213,7 @@ jobs:
             freebsd-version
             yarn install
             yarn build
+            yarn post:build
             strip -x *.node
             yarn test
             rm -rf node_modules

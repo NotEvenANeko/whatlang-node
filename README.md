@@ -27,12 +27,12 @@ pnpm add @notevenaneko/whatlang-node
 ### Detect language
 
 ```typescript
-import { detect } from '@notevenaneko/whatlang-node'
+import { detect, LangCode, LangCodeISO6391 } from '@notevenaneko/whatlang-node'
 
 const info = detect(englishInput)
 
-info.lang.code === 'eng'
-info.lang.codeISO6391 === 'en'
+info.lang.code === LangCode.Eng
+info.lang.codeISO6391 === LangCodeISO6391.En
 info.lang.name === 'English'
 info.lang.engName === 'English'
 
@@ -56,7 +56,7 @@ normalDetector.detectLang(englishInput).code === LangCode.Eng
 
 chineseDetector.detectLang(englishInput) === null
 
-const noZhDetector = Detector.withDenylist([LangCode.Cmn /* or 'zh' in ISO639-1 */])
+const noZhDetector = Detector.withDenylist([LangCode.Cmn /* or LangCodeISO6391.Zh in ISO639-1 */])
 
 normalDetector.detectLang(chineseInput).code === LangCode.Cmn
 

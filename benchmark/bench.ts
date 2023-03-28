@@ -1,21 +1,27 @@
 import b from 'benny'
+import Detector from 'languagedetect'
+import { detectLang } from 'whatlang-node'
 
-import { plus100 } from '../index'
+import { detectLang as detectLang2 } from '..'
 
-function add(a: number) {
-  return a + 100
-}
+const input = 'The quick brown fox jumps over the lazy dog'
 
 async function run() {
   await b.suite(
-    'Add 100',
+    'Detect language',
 
-    b.add('Native a + 100', () => {
-      plus100(10)
+    b.add('languagedetect', () => {
+      const detector = new Detector()
+
+      detector.detect(input, 1)
     }),
 
-    b.add('JavaScript a + 100', () => {
-      add(10)
+    b.add('whatlang-node', () => {
+      detectLang(input)
+    }),
+
+    b.add('@notevenaneko/whatlang-node', () => {
+      detectLang2(input)
     }),
 
     b.cycle(),
